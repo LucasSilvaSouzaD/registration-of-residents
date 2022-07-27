@@ -1,5 +1,6 @@
 const readline = require('readline');
 const fs = require('fs');
+
 const terminal = readline.createInterface({
     input: process.stdin,
     output: process.stdout
@@ -32,7 +33,7 @@ const writeFileSyncJson = (url, json) => {
             name: name,
             age: Number(age)
         }
-        // abrir arquivo JSON (moradores cadastrados)
+        
         const data = JSON.parse(fileSyncJson(url));
         data.push(resident);
         
