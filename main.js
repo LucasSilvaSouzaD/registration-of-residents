@@ -26,31 +26,34 @@ const writeFileSyncJson = (url, json) => {
 ;
 (async function main() {
     try {
-        const name = await questionAsync('Digite seu nome: ');
-        const age = await questionAsync('Digite sua idade: ');
+        const name = await questionAsync('Enter your name: ');
+        const age = await questionAsync('Enter your age: ');
+
+        if (!Number(age)) throw new Error('Age field are just numbers')
 
         const resident = {
             name: name,
             age: Number(age)
         }
-        
-        const data = JSON.parse(fileSyncJson(url));
-        data.push(resident);
-        
-        writeFileSyncJson(url, data, 'utf-8')
-        
-        const residents = JSON.parse(fileSyncJson(url))
 
+        const residents = JSON.parse(fileSyncJson(url));
+        residents.push(resident);
+        
+        writeFileSyncJson(url, residents, 'utf-8')
+        
         const residentsQtd = residents.length
         const mandatoryVoters = residents.filter(voter => voter.age >= 18 && voter.age <= 69).length
         const optionalVoters = residents.filter(voter => voter.age == 16 || voter.age == 17 || voter.age >= 70).length
         const nonVoters = residents.filter(voter => voter.age < 16, 0).length
         
-        return console.log(`moradores: ${residentsQtd},
-        eleitores obrigatórios: ${mandatoryVoters},
-        eleitores facultativos: ${optionalVoters},
-        não eleitores: ${nonVoters}
-        `)
+        const result = {
+            "residents": residentsQtd,
+            "mandatory voters": mandatoryVoters,
+            "optinal voters": optionalVoters,
+            "nonvoters": nonVoters
+        }
+
+        return console.log(result)
 
     } catch (error) {
         console.log(error);
